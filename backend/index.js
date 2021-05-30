@@ -1,31 +1,26 @@
 const { ApolloServer, gql } = require("apollo-server");
 
 const typeDefs = gql`
-  type Book {
-    title: String
-    author: String
-  }
   type MainCard {
     title: String!
     image: String!
   }
 
+  type Animal {
+    image: String!
+    title: String!
+    rating: Float
+    price: String!
+    description: [String!]!
+    stock: Int!
+    onSale: Boolean
+  }
+
   type Query {
-    books: [Book]
     cards: [MainCard]
+    animals: [Animal]
   }
 `;
-
-const books = [
-  {
-    title: "The Awakening",
-    author: "Kate Chopin",
-  },
-  {
-    title: "City of Glass",
-    author: "Paul Auster",
-  },
-];
 
 const cards = [
   {
@@ -42,16 +37,12 @@ const cards = [
 
 const resolvers = {
   Query: {
-    books: () => books,
     cards: () => cards,
   },
 };
 
-// The ApolloServer constructor requires two parameters: your schema
-// definition and your set of resolvers.
 const server = new ApolloServer({ typeDefs, resolvers });
 
-// The `listen` method launches a web server.
 server.listen().then(({ url }) => {
-  console.log(`🚀  Server ready at ${url}`);
+  console.log(`Server ready at ${url}`);
 });
