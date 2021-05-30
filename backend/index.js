@@ -1,5 +1,7 @@
 const { ApolloServer, gql } = require("apollo-server");
 
+const { cards, animals, categories } = require("./db");
+
 const typeDefs = gql`
   type MainCard {
     title: String!
@@ -7,6 +9,8 @@ const typeDefs = gql`
   }
 
   type Animal {
+    id: ID!
+    slug: String!
     image: String!
     title: String!
     rating: Float
@@ -16,28 +20,39 @@ const typeDefs = gql`
     onSale: Boolean
   }
 
+  type Category {
+    id: ID!
+    image: String!
+    category: String!
+    slug: String!
+  }
+
   type Query {
     cards: [MainCard]
-    animals: [Animal]
+    animals: [Animal!]! #adding '!'will trigger the error or else will show null for the blank values
+    animal(slug: String!): Animal
+    categories: [Category!]!
+    category(slug: String!): Category
   }
 `;
-
-const cards = [
-  {
-    title: "card 1",
-    image:
-      " https://images.unsplash.com/photo-1621570169561-0c2a2e193ee1?ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80",
-  },
-  {
-    title: "card 2",
-    image:
-      "https://images.unsplash.com/photo-1606312048616-f1325f4bea44?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=750&q=80",
-  },
-];
 
 const resolvers = {
   Query: {
     cards: () => cards,
+    animals: () => animals,
+    animal: (parent, args, ctx) => {
+      let animal = animals.find((animal) => {
+        return animal.slug === args.slug;
+      });
+      return animal;
+    },
+    categories: () => categories,
+    category: (parents, args, ctx) => {
+      let category = categories.find((category) => {
+        return category.slug === args.slug;
+      });
+      return category;
+    },
   },
 };
 
