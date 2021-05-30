@@ -1,7 +1,7 @@
 const Query = {
-  cards: () => cards,
-  animals: (parent, args, { animals }) => animals,
-  animal: (parent, args, { animals }) => {
+  cards: (parents, args, { cards }) => cards,
+  animals: (parents, args, { animals }) => animals,
+  animal: (parents, args, { animals }) => {
     let animal = animals.find((animal) => {
       return animal.slug === args.slug;
     });
