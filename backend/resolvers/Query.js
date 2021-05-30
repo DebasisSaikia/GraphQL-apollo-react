@@ -1,14 +1,14 @@
 const Query = {
   cards: () => cards,
-  animals: () => animals,
-  animal: (parent, args, ctx) => {
+  animals: (parent, args, { animals }) => animals,
+  animal: (parent, args, { animals }) => {
     let animal = animals.find((animal) => {
       return animal.slug === args.slug;
     });
     return animal;
   },
-  categories: () => categories,
-  category: (parents, args, ctx) => {
+  categories: (parents, args, { categories }) => categories,
+  category: (parents, args, { categories }) => {
     let category = categories.find((category) => {
       return category.slug === args.slug;
     });

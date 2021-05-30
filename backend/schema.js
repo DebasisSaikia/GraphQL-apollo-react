@@ -34,6 +34,21 @@ const typeDefs = gql`
     categories: [Category!]!
     category(slug: String!): Category
   }
+  type Mutation {
+    addData(
+      slug: String!
+      image: String!
+      title: String!
+      rating: Float
+      price: String!
+      description: [String!]!
+      stock: Int!
+      onSale: Boolean
+      category: String!
+    ): Animal
+
+    removeData(id: ID!): Boolean!
+  }
 `;
 
 module.exports = typeDefs;
